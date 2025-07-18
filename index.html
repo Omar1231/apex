@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>apex</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles for better aesthetics and specific overrides - British Council inspired */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Very light gray/off-white */
+            color: #343a40; /* Darker text for contrast */
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.5rem; /* Increased padding */
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* Slightly less rounded for a cleaner look */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Softer, subtle shadow */
+            padding: 2rem; /* Increased padding inside cards */
+            margin-bottom: 2rem; /* Increased margin between cards */
+            border: 1px solid #e9ecef; /* Light border for definition */
+        }
+        .btn-primary {
+            background-color: #007bff; /* British Council blue */
+            color: white;
+            padding: 0.8rem 1.8rem; /* Slightly larger buttons */
+            border-radius: 0.5rem; /* Slightly less rounded for professional look */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 600; /* Semi-bold */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: translateY(-1px); /* Subtle lift effect */
+        }
+        .btn-secondary {
+            background-color: #e9ecef; /* Light gray */
+            color: #495057; /* Dark gray text */
+            padding: 0.8rem 1.8rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+        }
+        .btn-secondary:hover {
+            background-color: #dee2e6; /* Darker gray on hover */
+            transform: translateY(-1px);
+        }
+        .btn-premium {
+            background-color: #ffc107; /* Amber for premium */
+            color: #343a40; /* Dark text on amber */
+            padding: 0.8rem 1.8rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+        }
+        .btn-premium:hover {
+            background-color: #e0a800; /* Darker amber */
+            transform: translateY(-1px);
+        }
+        input[type="text"], input[type="number"], select, textarea {
+            border: 1px solid #ced4da; /* Medium gray border */
+            border-radius: 0.3rem; /* Slightly less rounded inputs */
+            padding: 0.75rem 1rem;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1rem;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #007bff; /* Blue focus ring */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Softer focus shadow */
+        }
+        .progress-bar-container {
+            background-color: #e9ecef; /* Light gray */
+            border-radius: 0.5rem;
+            height: 1.2rem; /* Slightly thinner */
+            overflow: hidden;
+        }
+        .progress-bar {
+            background-color: #28a745; /* Green for progress */
+            height: 100%;
+            width: 0%;
+            border-radius: 0.5rem;
+            transition: width 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.75rem; /* text-xs */
+        }
+        .notification-box {
+            background-color: #ffffff;
+            border-left: 5px solid #007bff; /* Blue border */
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+            display: none;
+            font-weight: 500;
+        }
+        .notification-box.success { border-color: #28a745; color: #218838; }
+        .notification-box.error { border-color: #dc3545; color: #c82333; }
+        .notification-box.warning { border-color: #ffc107; color: #d39e00; }
+        .notification-box.info { border-color: #17a2b8; color: #138496; } /* Cyan for info */
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 0; /* More vertical padding */
+            border-bottom: 1px dashed #e9ecef; /* Lighter dashed border */
+        }
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        .task-checkbox {
+            width: 1.3rem; /* Slightly larger */
+            height: 1.3rem;
+            border-radius: 0.25rem;
+            border: 1px solid #6c757d; /* Darker gray border */
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: #fff;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .task-checkbox:checked {
+            background-color: #007bff; /* Blue when checked */
+            border-color: #007bff;
+        }
+        .task-checkbox:checked::before {
+            content: '\2713';
+            display: block;
+            color: white;
+            font-size: 1rem;
+            line-height: 1.3rem;
+            text-align: center;
+        }
+        .exercise-feedback {
+            margin-top: 1.5rem; /* More space */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .exercise-feedback.correct {
+            background-color: #d4edda; /* Light green */
+            color: #155724; /* Dark green */
+            border: 1px solid #c3e6cb;
+        }
+        .exercise-feedback.incorrect {
+            background-color: #f8d7da; /* Light red */
+            color: #721c24; /* Dark red */
+            border: 1px solid #f5c6cb;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7); /* Slightly darker overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto;
+            padding: 2.5rem; /* More padding */
+            border-radius: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 550px; /* Slightly wider */
+            animation: fadeIn 0.3s ease-out;
+        }
+        .profile-image {
+            width: 110px; /* Slightly larger */
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #007bff; /* Blue border */
+            margin: 0 auto 1.5rem; /* More margin */
+            display: block;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .achievement-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e9ecef; /* Light gray */
+            color: #495057;
+            padding: 0.6rem 1.2rem; /* More padding */
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0.3rem;
+            border: 1px solid #dee2e6;
+        }
+        .achievement-badge.unlocked {
+            background-color: #28a745; /* Green for unlocked */
+            color: white;
+            border-color: #218838;
+        }
+        .flashcard {
+            background-color: #ffffff;
+            border: 1px solid #ced4da; /* Clean border */
+            border-radius: 0.75rem;
+            padding: 1.8rem; /* More padding */
+            min-height: 160px; /* Taller cards */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem; /* Slightly larger font */
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            perspective: 1000px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .flashcard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+        .ai-chat-box {
+            background-color: #f8f9fa; /* Lighter background */
+            border: 1px solid #e9ecef;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            max-height: 350px; /* Taller chatbox */
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .ai-message, .user-message {
+            max-width: 85%; /* Wider bubbles */
+            padding: 0.8rem 1.2rem; /* More padding */
+            border-radius: 1.2rem; /* More rounded bubbles */
+            margin-bottom: 0.6rem; /* More space between messages */
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .ai-message {
+            background-color: #e0f2f7; /* Light blue for AI */
+            align-self: flex-start;
+            text-align: right;
+            border-bottom-right-radius: 0.3rem; /* Tail for bubble */
+        }
+        .user-message {
+            background-color: #d4edda; /* Light green for user */
+            align-self: flex-end;
+            text-align: right;
+            border-bottom-left-radius: 0.3rem; /* Tail for bubble */
+        }
+        .ai-message.loading {
+            background-color: #fff3cd; /* Light yellow for loading */
+            color: #856404;
+        }
+        h2 {
+            color: #0056b3; /* Darker blue for headings */
+            font-weight: 700; /* Extra bold */
+        }
+        h3 {
+            color: #007bff; /* British Council blue for sub-headings */
+        }
+        .top-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem; /* Space between buttons */
+            margin-bottom: 2rem;
+            background-color: #ffffff;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e9ecef;
+        }
+        .top-nav-btn {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 0.7rem 1.4rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            white-space: nowrap; /* Prevent wrapping */
+        }
+        .top-nav-btn:hover, .top-nav-btn.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .top-nav-btn i {
+            margin-left: 0.5rem; /* Space for icon */
+        }
+        .main-content-section {
+            display: none; /* Hidden by default */
+        }
+        .main-content-section.active {
+            display: block;
+        }
+        .listening-text-display {
+            display: none; /* Hidden by default for listening */
+            background-color: #eef7ff; /* Lighter blue background for text display */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .pronunciation-text-display {
+            display: none; /* Hidden by default for pronunciation */
+            background-color: #f0f8ff; /* Very light blue background for text display */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .listening-text-highlight {
+            font-weight: bold;
+            color: #007bff; /* Highlight color */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container p-4">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-blue-800 mb-2">بوابة الإنجليزية</h1>
+            <p class="text-lg text-gray-600">خطوتك الأولى نحو إتقان الإنجليزية!</p>
+            <div id="userIdDisplay" class="text-sm text-gray-500 mt-2"></div>
+        </header>
+
+        <!-- Notification Box -->
+        <div id="notificationBox" class="notification-box mb-6">
+            <p id="notificationMessage" class="font-semibold"></p>
+        </div>
+
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <button class="top-nav-btn active" data-section="dashboard-section"><i class="fas fa-home ml-2"></i>الرئيسية</button>
+            <button class="top-nav-btn" data-section="vocabulary-section"><i class="fas fa-book-open ml-2"></i>المفردات</button>
+            <button class="top-nav-btn" data-section="grammar-section"><i class="fas fa-spell-check ml-2"></i>القواعد</button>
+            <button class="top-nav-btn" data-section="reading-section"><i class="fas fa-book-reader ml-2"></i>القراءة</button>
+            <button class="top-nav-btn" data-section="listening-section"><i class="fas fa-headphones-alt ml-2"></i>الاستماع</button>
+            <button class="top-nav-btn" data-section="pronunciation-section"><i class="fas fa-volume-up ml-2"></i>النطق</button>
+            <button class="top-nav-btn" data-section="ai-assistant-section"><i class="fas fa-robot ml-2"></i>محادثة الذكاء الاصطناعي</button>
+            <button class="top-nav-btn" data-section="video-lessons-section"><i class="fas fa-video ml-2"></i>دروس الفيديو</button>
+            <button class="top-nav-btn" data-section="profile-achievements-section"><i class="fas fa-user-circle ml-2"></i>ملفي الشخصي/إنجازاتي</button>
+        </nav>
+
+        <!-- Main Content Area - Dynamically Loaded Sections -->
+        <div id="mainContentArea">
+            <!-- Dashboard Section (Active by default) -->
+            <div id="dashboard-section" class="main-content-section active">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="card">
+                        <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-chart-line ml-2"></i> تقدمك العام</h2>
+                        <div class="progress-bar-container">
+                            <div id="overallProgressBar" class="progress-bar" style="width: 0%;">0%</div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">إجمالي المهام المكتملة: <span id="completedTasksCount">0</span></p>
+                        <div class="mt-6 text-center">
+                            <button id="upgradeToPremiumBtn" class="btn-premium flex items-center justify-center mx-auto">
+                                <i class="fas fa-star ml-2"></i>
+                                <span id="premiumButtonText">الترقية إلى الإمكانيات العالية</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-calendar-alt ml-2"></i> جدولك اليومي</h2>
+                        <div id="dailySchedule" class="space-y-3">
+                            <p class="text-gray-600">جاري تحميل جدولك اليومي...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vocabulary Section -->
+            <div id="vocabulary-section" class="main-content-section">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-clone ml-2"></i> بطاقات المفردات التعليمية</h2>
+                    <div class="flex mb-3">
+                        <input type="text" id="newWordInput" placeholder="أدخل كلمة جديدة (مثال: hello)" class="flex-grow mr-2">
+                        <button id="addWordBtn" class="btn-primary flex-shrink-0">أضف كلمة</button>
+                    </div>
+                    <div id="flashcardContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <p class="text-gray-600 text-sm col-span-full text-center">لا توجد كلمات بعد. أضف كلماتك لإنشاء بطاقات تعليمية!</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-dumbbell ml-2"></i> تمارين المفردات</h2>
+                    <div id="vocabularyExerciseArea" class="border border-gray-300 rounded-lg p-5 bg-gray-50">
+                        <p class="text-gray-600">اضغط على "بدء تمرين" لبدء تمرين مفردات.</p>
+                        <button id="startVocabExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>
+                    </div>
+                    <div id="vocabularyExerciseFeedback" class="exercise-feedback hidden"></div>
+                    <p id="vocabularyExerciseScoreDisplay" class="text-sm text-gray-600 mt-3 text-center">الدرجة: 0 / 0</p>
+                </div>
+            </div>
+
+            <!-- Grammar Section -->
+            <div id="grammar-section" class="main-content-section">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-spell-check ml-2"></i> تمارين القواعد</h2>
+                    <div id="grammarExerciseArea" class="border border-gray-300 rounded-lg p-5 bg-gray-50">
+                        <p class="text-gray-600">اضغط على "بدء تمرين" لبدء تمرين قواعد.</p>
+                        <button id="startGrammarExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>
+                    </div>
+                    <div id="grammarExerciseFeedback" class="exercise-feedback hidden"></div>
+                    <p id="grammarExerciseScoreDisplay" class="text-sm text-gray-600 mt-3 text-center">الدرجة: 0 / 0</p>
+                </div>
+            </div>
+
+            <!-- Reading Section -->
+            <div id="reading-section" class="main-content-section">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-book-reader ml-2"></i> تمارين القراءة</h2>
+                    <div id="readingContentArea" class="border border-gray-300 rounded-lg p-5 bg-gray-50 mb-4">
+                        <p class="text-gray-600">اضغط على "بدء تمرين" لتحميل نص القراءة والأسئلة.</p>
+                        <button id="startReadingExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>
+                    </div>
+                    <div id="readingExerciseFeedback" class="exercise-feedback hidden"></div>
+                    <p id="readingExerciseScoreDisplay" class="text-sm text-gray-600 mt-3 text-center">الدرجة: 0 / 0</p>
+                </div>
+            </div>
+
+            <!-- Listening Section -->
+            <div id="listening-section" class="main-content-section">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-headphones-alt ml-2"></i> تمارين الاستماع</h2>
+                    <div id="listeningContentArea" class="border border-gray-300 rounded-lg p-5 bg-gray-50 mb-4">
+                        <p class="text-gray-600">اضغط على "بدء تمرين" لعرض نص الاستماع وتشغيل الصوت.</p>
+                        <button id="startListeningExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>
+                    </div>
+                    <div id="listeningExerciseFeedback" class="exercise-feedback hidden"></div>
+                    <p id="listeningExerciseScoreDisplay" class="text-sm text-gray-600 mt-3 text-center">الدرجة: 0 / 0</p>
+                </div>
+            </div>
+
+            <!-- Pronunciation Section -->
+            <div id="pronunciation-section" class="main-content-section">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-volume-up ml-2"></i> تمارين النطق</h2>
+                    <div id="pronunciationExerciseArea" class="border border-gray-300 rounded-lg p-5 bg-gray-50">
+                        <p class="text-gray-600">اضغط على "بدء تمرين" لبدء تمرين النطق.</p>
+                        <button id="startPronunciationExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>
+                    </div>
+                    <div id="pronunciationExerciseFeedback" class="exercise-feedback hidden"></div>
+                    <p id="pronunciationExerciseScoreDisplay" class="text-sm text-gray-600 mt-3 text-center">الدرجة: 0 / 0</p>
+                </div>
+            </div>
+
+            <!-- AI Language Assistant Section -->
+            <div id="ai-assistant-section" class="main-content-section">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-robot ml-2"></i> مساعد اللغة بالذكاء الاصطناعي</h2>
+                    <div class="mb-4">
+                        <label for="geminiApiKeyInput" class="block text-right text-gray-700 text-sm font-bold mb-2">مفتاح Gemini API الخاص بك:</label>
+                        <input type="text" id="geminiApiKeyInput" placeholder="أدخل مفتاح API هنا" class="mb-2">
+                        <p class="text-xs text-gray-500 text-right">ملاحظة: هذا المفتاح ضروري لتشغيل مساعد الذكاء الاصطناعي.</p>
+                    </div>
+                    <div id="aiChatBox" class="ai-chat-box mb-4">
+                        <div class="ai-message">مرحباً! أنا مساعدك اللغوي. كيف يمكنني مساعدتك في ممارسة الإنجليزية اليوم؟</div>
+                    </div>
+                    <div class="flex">
+                        <input type="text" id="aiChatInput" placeholder="اكتب رسالتك هنا..." class="flex-grow mr-2">
+                        <button id="sendAiChatBtn" class="btn-primary flex-shrink-0">إرسال</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Lessons Section -->
+            <div id="video-lessons-section" class="main-content-section">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-video ml-2"></i> دروس الفيديو</h2>
+                    <div id="videoLessons" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Video 1 -->
+                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-semibold mb-2">مقدمة للغة الإنجليزية</h3>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/videoseries?list=PLB0c_hG3X0N_G3P3_P3_P3_P3_P3_P" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <p class="text-sm text-gray-600">تعلم أساسيات اللغة الإنجليزية من البداية.</p>
+                        </div>
+                        <!-- Video 2 -->
+                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-semibold mb-2">القواعد الأساسية للمبتدئين</h3>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/videoseries?list=PLB0c_hG3X0N_G3P3_P3_P3_P3_P3_P3_Q" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <p class="text-sm text-gray-600">فهم أهم القواعد النحوية في الإنجليزية.</p>
+                        </div>
+                        <!-- Video 3 -->
+                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-semibold mb-2">المحادثة اليومية</h3>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/videoseries?list=PLB0c_hG3X0N_G3P3_P3_P3_P3_P3_P3_R" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <p class="text-sm text-gray-600">عبارات وجمل مفيدة للمحادثات اليومية.</p>
+                        </div>
+                        <!-- Video 4 -->
+                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-semibold mb-2">تطوير المفردات</h3>
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/videoseries?list=PLB0c_hG3X0N_G3P3_P3_P3_P3_P3_P3_S" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <p class="text-sm text-gray-600">طرق فعالة لزيادة حصيلتك اللغوية.</p>
+                        </div>
+                        <!-- Add more videos as needed -->
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4 text-center">
+                        ملاحظة: هذه روابط أمثلة. يمكنك استبدالها بروابط مقاطع الفيديو المفضلة لديك من يوتيوب أو مصادر أخرى.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Profile and Achievements Section -->
+            <div id="profile-achievements-section" class="main-content-section">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="card">
+                        <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-user-circle ml-2"></i> ملفك الشخصي</h2>
+                        <img id="profileCardImage" src="https://placehold.co/100x100/A0B0F0/ffffff?text=صورة" alt="Profile Image" class="profile-image mb-2">
+                        <p class="text-md text-gray-700 text-center">المستوى: <span id="profileCardLevel">لم يحدد بعد</span></p>
+                        <p class="text-sm text-gray-600 text-center">العمر: <span id="profileCardAge"></span></p>
+                        <p class="text-sm text-gray-600 text-center">المرحلة: <span id="profileCardGrade"></span></p>
+                        <p class="text-sm text-gray-600 text-center">الصعوبة المفضلة: <span id="profileCardDifficulty"></span></p>
+                        <button id="editProfileBtn" class="btn-secondary w-full mt-4">تعديل الملف الشخصي</button>
+                    </div>
+                    <div class="card">
+                        <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-trophy ml-2"></i> أوسمتي وإنجازاتي</h2>
+                        <div id="achievementsContainer" class="flex flex-wrap gap-2 justify-center">
+                            <span class="achievement-badge" data-achievement="first_task"><i class="fas fa-check-circle ml-1"></i> أول مهمة</span>
+                            <span class="achievement-badge" data-achievement="10_tasks"><i class="fas fa-tasks ml-1"></i> 10 مهام</span>
+                            <span class="achievement-badge" data-achievement="first_exercise"><i class="fas fa-dumbbell ml-1"></i> أول تمرين</span>
+                            <span class="achievement-badge" data-achievement="50_exercises"><i class="fas fa-star ml-1"></i> 50 تمرين</span>
+                            <span class="achievement-badge" data-achievement="vocab_master"><i class="fas fa-book ml-1"></i> خبير مفردات</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- End of Main Content Area -->
+    </div>
+
+    <!-- Profile Setup Modal -->
+    <div id="profileSetupModal" class="modal hidden">
+        <div class="modal-content text-center">
+            <h2 class="text-2xl font-bold mb-4">أهلاً بك! لنبدأ بإعداد ملفك الشخصي.</h2>
+            <img id="profileImagePreview" src="https://placehold.co/100x100/A0B0F0/ffffff?text=صورة" alt="Profile Image" class="profile-image">
+            <div class="mb-4 text-right">
+                <label for="profileImageUrl" class="block text-gray-700 text-sm font-bold mb-2">رابط صورة الملف الشخصي (URL):</label>
+                <input type="text" id="profileImageUrl" placeholder="أدخل رابط الصورة هنا" class="mb-2">
+                <p class="text-xs text-gray-500">مثال: https://placehold.co/100x100</p>
+            </div>
+            <div class="mb-4 text-right">
+                <label for="userAge" class="block text-gray-700 text-sm font-bold mb-2">كم عمرك؟</label>
+                <input type="number" id="userAge" min="5" max="99" placeholder="أدخل عمرك" class="mb-2">
+            </div>
+            <div class="mb-4 text-right">
+                <label for="userGrade" class="block text-gray-700 text-sm font-bold mb-2">ما هي مرحلتك الدراسية؟</label>
+                <select id="userGrade" class="mb-2">
+                    <option value="">اختر المرحلة</option>
+                    <option value="ابتدائي">ابتدائي</option>
+                    <option value="اعدادي">اعدادي</option>
+                    <option value="ثانوي">ثانوي</option>
+                    <option value="جامعي/بعد التخرج">جامعي/بعد التخرج</option>
+                    <option value="غير ذلك">غير ذلك</option>
+                </select>
+            </div>
+            <div class="mb-4 text-right">
+                <label for="userBirthMonth" class="block text-gray-700 text-sm font-bold mb-2">ما هو شهر ميلادك؟</label>
+                <select id="userBirthMonth" class="mb-2">
+                    <option value="">اختر الشهر</option>
+                    <option value="يناير">يناير</option>
+                    <option value="فبراير">فبراير</option>
+                    <option value="مارس">مارس</option>
+                    <option value="ابريل">ابريل</option>
+                    <option value="مايو">مايو</option>
+                    <option value="يونيو">يونيو</option>
+                    <option value="يوليو">يوليو</option>
+                    <option value="اغسطس">اغسطس</option>
+                    <option value="سبتمبر">سبتمبر</option>
+                    <option value="اكتوبر">اكتوبر</option>
+                    <option value="نوفمبر">نوفمبر</option>
+                    <option value="ديسمبر">ديسمبر</option>
+                </select>
+            </div>
+            <div class="mb-6 text-right">
+                <label for="userDifficulty" class="block text-gray-700 text-sm font-bold mb-2">ما هو مستوى الصعوبة المفضل لديك؟</label>
+                <select id="userDifficulty" class="mb-2">
+                    <option value="سهل">سهل (مبتدئ)</option>
+                    <option value="متوسط">متوسط</option>
+                    <option value="صعب">صعب (متقدم)</option>
+                </select>
+            </div>
+            <button id="saveProfileBtn" class="btn-primary w-full">حفظ وإكمال الإعداد</button>
+        </div>
+    </div>
+
+    <!-- Initial Assessment Modal (Kept hidden, but structure remains) -->
+    <div id="assessmentModal" class="modal hidden">
+        <div class="modal-content text-center">
+            <h2 class="text-2xl font-bold mb-4">اختبار تحديد المستوى</h2>
+            <p class="text-gray-700 mb-4">أجب على الأسئلة التالية لتحديد مستواك في اللغة الإنجليزية.</p>
+            <div id="assessmentQuestionArea" class="border border-gray-300 rounded-lg p-4 bg-gray-50 mb-4 text-right">
+                <!-- Assessment questions will be loaded here -->
+            </div>
+            <button id="submitAssessmentBtn" class="btn-primary w-full">التالي</button>
+            <p id="assessmentProgress" class="text-sm text-gray-600 mt-2">السؤال 1 من 5</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, addDoc, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables for Firebase (MANDATORY)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, db, auth, userId;
+        let isAuthReady = false;
+        let userProfile = null; // Stores user profile data
+        let userLevel = 'beginner'; // Default level, updated by preference
+
+        // API Key for Gemini (Will be read from input field)
+        let GEMINI_API_KEY = "";
+
+        // Initialize Firebase and authenticate
+        const initFirebase = async () => {
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        document.getElementById('userIdDisplay').textContent = `معرف المستخدم: ${userId}`;
+                        isAuthReady = true;
+                        console.log("Firebase Authenticated. User ID:", userId);
+                        await loadUserProfile(); // Load profile first
+                        loadUserData(); // Then load other data
+                        setupRealtimeListeners();
+                        updatePremiumFeaturesVisibility(); // Update visibility based on profile
+                    } else {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Error initializing Firebase or authenticating:", error);
+                showNotification(`خطأ في تهيئة التطبيق: ${error.message}`, 'error');
+            }
+        };
+
+        // --- Firestore Data Management ---
+
+        const getUserDocRef = (collectionName, docId = 'data') => {
+            if (!userId) {
+                console.error("User ID is not available for Firestore operations.");
+                return null;
+            }
+            return doc(db, `artifacts/${appId}/users/${userId}/${collectionName}`, docId);
+        };
+
+        const loadUserProfile = async () => {
+            if (!isAuthReady) return;
+            const profileDocRef = getUserDocRef('profile', 'data');
+            if (profileDocRef) {
+                const profileSnap = await getDoc(profileDocRef);
+                if (profileSnap.exists()) {
+                    userProfile = profileSnap.data();
+                    // Set userLevel based on difficultyPreference from loaded profile
+                    const levelMap = { 'سهل': 'beginner', 'متوسط': 'intermediate', 'صعب': 'advanced' };
+                    userLevel = levelMap[userProfile.difficultyPreference] || 'beginner';
+                    updateProfileDashboard(); // Update dashboard with profile info
+                    updatePremiumFeaturesVisibility(); // Update visibility based on profile
+
+                    // Only show profile setup if it's not completed
+                    if (!userProfile.profileCompleted) {
+                        showProfileSetupModal();
+                    }
+                    console.log("User Profile Loaded:", userProfile);
+                } else {
+                    // No profile exists, show setup modal
+                    userProfile = null;
+                    showProfileSetupModal();
+                }
+            }
+        };
+
+        const saveUserProfile = async () => {
+            if (!isAuthReady) {
+                showNotification("الرجاء الانتظار حتى يتم تهيئة التطبيق.", 'info');
+                return;
+            }
+
+            const age = document.getElementById('userAge').value;
+            const grade = document.getElementById('userGrade').value;
+            const month = document.getElementById('userBirthMonth').value;
+            const difficulty = document.getElementById('userDifficulty').value;
+            const imageUrl = document.getElementById('profileImageUrl').value;
+
+            if (!age || !grade || !month || !difficulty) {
+                showNotification("الرجاء ملء جميع حقول الملف الشخصي.", 'warning');
+                return;
+            }
+
+            const levelMap = { 'سهل': 'beginner', 'متوسط': 'intermediate', 'صعب': 'advanced' };
+            const determinedUserLevel = levelMap[difficulty] || 'beginner';
+
+            userProfile = {
+                age: parseInt(age),
+                grade: grade,
+                birthMonth: month,
+                difficultyPreference: difficulty,
+                profileImageUrl: imageUrl || 'https://placehold.co/100x100/A0B0F0/ffffff?text=صورة', // Default placeholder
+                userLevel: determinedUserLevel, // Set user level directly from difficulty preference
+                isPremium: userProfile ? userProfile.isPremium : false, // Keep premium status
+                profileCompleted: true, // Mark profile as completed
+                assessmentCompleted: true // Always true now as assessment is skipped
+            };
+
+            const profileDocRef = getUserDocRef('profile', 'data');
+            if (profileDocRef) {
+                try {
+                    await setDoc(profileDocRef, userProfile);
+                    document.getElementById('profileSetupModal').classList.add('hidden');
+                    showNotification("تم حفظ ملفك الشخصي بنجاح!", 'success');
+                    updateProfileDashboard();
+                    updatePremiumFeaturesVisibility();
+                } catch (error) {
+                    console.error("Error saving profile to Firestore:", error);
+                    showNotification("خطأ في حفظ الملف الشخصي.", 'error');
+                }
+            }
+        };
+
+        const updateProfileDashboard = () => {
+            if (userProfile) {
+                // Update dashboard card
+                document.getElementById('profileCardImage').src = userProfile.profileImageUrl;
+                document.getElementById('profileCardLevel').textContent = userProfile.userLevel || 'لم يحدد بعد';
+                document.getElementById('profileCardAge').textContent = userProfile.age || 'غير محدد';
+                document.getElementById('profileCardGrade').textContent = userProfile.grade || 'غير محدد';
+                document.getElementById('profileCardDifficulty').textContent = userProfile.difficultyPreference || 'غير محدد';
+
+                // Update modal preview
+                document.getElementById('profileImagePreview').src = userProfile.profileImageUrl;
+                document.getElementById('userAge').value = userProfile.age || '';
+                document.getElementById('userGrade').value = userProfile.grade || '';
+                document.getElementById('userBirthMonth').value = userProfile.birthMonth || '';
+                document.getElementById('userDifficulty').value = userProfile.difficultyPreference || 'سهل';
+                document.getElementById('profileImageUrl').value = userProfile.profileImageUrl || '';
+            }
+        };
+
+        const loadUserData = async () => {
+            if (!isAuthReady) return;
+
+            // Load vocabulary
+            const vocabDocRef = getUserDocRef('vocabulary', 'words');
+            if (vocabDocRef) {
+                const vocabSnap = await getDoc(vocabDocRef);
+                if (vocabSnap.exists()) {
+                    userVocabulary = vocabSnap.data().words || [];
+                } else {
+                    await setDoc(vocabDocRef, { words: [] });
+                    userVocabulary = [];
+                }
+                renderFlashcards();
+            }
+
+            // Load schedule completion
+            const scheduleDocRef = getUserDocRef('schedule_data', 'daily_completion');
+            if (scheduleDocRef) {
+                const scheduleSnap = await getDoc(scheduleDocRef);
+                if (scheduleSnap.exists()) {
+                    dailyCompletionStatus = scheduleSnap.data().completion || {};
+                } else {
+                    await setDoc(scheduleDocRef, { completion: {} });
+                    dailyCompletionStatus = {};
+                }
+                renderDailySchedule();
+                updateOverallProgress();
+                setupNotifications();
+            }
+
+            // Load achievements
+            const achievementsDocRef = getUserDocRef('achievements', 'status');
+            if (achievementsDocRef) {
+                const achievementsSnap = await getDoc(achievementsDocRef);
+                if (achievementsSnap.exists()) {
+                    userAchievements = achievementsSnap.data().unlocked || [];
+                } else {
+                    await setDoc(achievementsDocRef, { unlocked: [] });
+                    userAchievements = [];
+                }
+                renderAchievements();
+            }
+        };
+
+        const setupRealtimeListeners = () => {
+            if (!isAuthReady) return;
+
+            const vocabDocRef = getUserDocRef('vocabulary', 'words');
+            if (vocabDocRef) {
+                onSnapshot(vocabDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        userVocabulary = docSnap.data().words || [];
+                        renderFlashcards();
+                    }
+                }, (error) => console.error("Error listening to vocabulary:", error));
+            }
+
+            const scheduleDocRef = getUserDocRef('schedule_data', 'daily_completion');
+            if (scheduleDocRef) {
+                onSnapshot(doc(db, `artifacts/${appId}/users/${userId}/schedule_data`, 'daily_completion'), (docSnap) => {
+                    if (docSnap.exists()) {
+                        dailyCompletionStatus = docSnap.data().completion || {};
+                        renderDailySchedule();
+                        updateOverallProgress();
+                        setupNotifications();
+                        checkAchievements(); // Check achievements on schedule change
+                    }
+                }, (error) => console.error("Error listening to schedule completion:", error));
+            }
+
+            const profileDocRef = getUserDocRef('profile', 'data');
+            if (profileDocRef) {
+                onSnapshot(profileDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        userProfile = docSnap.data();
+                        const levelMap = { 'سهل': 'beginner', 'متوسط': 'intermediate', 'صعب': 'advanced' };
+                        userLevel = levelMap[userProfile.difficultyPreference] || 'beginner';
+                        updateProfileDashboard();
+                        updatePremiumFeaturesVisibility();
+                    }
+                }, (error) => console.error("Error listening to profile:", error));
+            }
+
+            const achievementsDocRef = getUserDocRef('achievements', 'status');
+            if (achievementsDocRef) {
+                onSnapshot(achievementsDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        userAchievements = docSnap.data().unlocked || [];
+                        renderAchievements();
+                    }
+                }, (error) => console.error("Error listening to achievements:", error));
+            }
+        };
+
+        // --- App State and Data ---
+        let userVocabulary = [];
+        let dailyCompletionStatus = {};
+        let currentExercise = null;
+        let exerciseCorrectCount = 0;
+        let exerciseAttemptCount = 0;
+        let userAchievements = [];
+
+        // Define a broader range of activities/skills
+        const activityTypes = {
+            vocabulary: { text: 'مفردات', minDuration: 10, maxDuration: 20 },
+            grammar: { text: 'قواعد', minDuration: 15, maxDuration: 25 },
+            reading: { text: 'قراءة', minDuration: 15, maxDuration: 20 },
+            listening: { text: 'استماع', minDuration: 10, maxDuration: 15 },
+            pronunciation: { text: 'نطق', minDuration: 10, maxDuration: 15 },
+            speaking: { text: 'محادثة', minDuration: 10, maxDuration: 20 },
+            writing: { text: 'كتابة', minDuration: 15, maxDuration: 25 },
+            review: { text: 'مراجعة عامة', minDuration: 20, maxDuration: 30 },
+            test: { text: 'اختبار بسيط', minDuration: 15, maxDuration: 20 }
+        };
+
+        // Define a flexible weekly schedule structure
+        const weeklyScheduleBlueprint = [
+            // Each day can have a set of recommended activity types
+            { day: 'السبت', types: ['vocabulary', 'listening', 'speaking'] },
+            { day: 'الأحد', types: ['grammar', 'reading', 'writing'] },
+            { day: 'الاثنين', types: ['vocabulary', 'pronunciation', 'grammar'] },
+            { day: 'الثلاثاء', types: ['listening', 'writing', 'reading'] },
+            { day: 'الأربعاء', types: ['grammar', 'vocabulary', 'speaking'] },
+            { day: 'الخميس', types: ['reading', 'listening', 'pronunciation'] },
+            { day: 'الجمعة', types: ['review', 'test', 'speaking'] }
+        ];
+
+        // Extensive Exercise Data with levels
+        const allExercises = {
+            vocabulary: [
+                { type: 'translation_en_ar', question: 'Translate "cat" to Arabic:', answer: 'قطة', level: 'beginner' },
+                { type: 'fill_in_blank', question: 'The opposite of "hot" is ___', answer: 'cold', level: 'beginner' },
+                { type: 'translation_ar_en', question: 'Translate "مرحبا" to English:', answer: 'hello', level: 'beginner' },
+                { type: 'multiple_choice', question: 'Which word means "large"?', options: ['small', 'big', 'tiny'], answer: 'big', level: 'beginner' },
+                { type: 'translation_en_ar', question: 'Translate "beautiful" to Arabic:', answer: 'جميل', level: 'intermediate' },
+                { type: 'synonym', question: 'What is a synonym for "ancient"?', answer: 'old', level: 'intermediate' },
+                { type: 'antonym', question: 'What is the antonym of "courageous"?', answer: 'cowardly', level: 'advanced' },
+                { type: 'fill_in_blank', question: 'The economist analyzed the ___ (data) to predict market trends.', answer: 'statistics', level: 'advanced' },
+                { type: 'translation_en_ar', question: 'Translate "ubiquitous" to Arabic:', answer: 'منتشر في كل مكان', level: 'advanced' },
+                { type: 'fill_in_blank', question: 'A person who studies languages is a ___.', answer: 'linguist', level: 'advanced' },
+                { type: 'multiple_choice', question: 'Which word means to "grow rapidly"?', options: ['stagnate', 'flourish', 'decline'], answer: 'flourish', level: 'intermediate' },
+                { type: 'synonym', question: 'What is a synonym for "benevolent"?', answer: 'kind', level: 'advanced' },
+                { type: 'antonym', question: 'What is the antonym of "prudent"?', answer: 'reckless', level: 'advanced' },
+                { type: 'translation_en_ar', question: 'Translate "ephemeral" to Arabic:', answer: 'عابر/قصير الأجل', level: 'advanced' },
+                { type: 'fill_in_blank', question: 'The doctor prescribed a ___ for the patient\'s cough.', answer: 'remedy', level: 'intermediate' },
+                { type: 'multiple_choice', question: 'Which word describes someone who is "talkative"?', options: ['quiet', 'reserved', 'garrulous'], answer: 'garrulous', level: 'advanced' },
+                { type: 'translation_ar_en', question: 'Translate "ازدهار" to English:', answer: 'prosperity', level: 'intermediate' },
+                { type: 'synonym', question: 'What is a synonym for "arduous"?', answer: 'difficult', level: 'advanced' },
+                { type: 'fill_in_blank', question: 'The company faced a ___ (shortage) of skilled workers.', answer: 'dearth', level: 'advanced' },
+            ],
+            grammar: [
+                { type: 'multiple_choice', question: 'She ___ (go) to school every day.', options: ['go', 'goes', 'going'], answer: 'goes', level: 'beginner' },
+                { type: 'fill_in_blank', question: 'They ___ playing outside now (be verb).', answer: 'are', level: 'beginner' },
+                { type: 'multiple_choice', question: 'I ___ (eat) breakfast this morning.', options: ['eat', 'eats', 'ate'], answer: 'ate', level: 'beginner' },
+                { type: 'sentence_correction', question: 'Correct: "He don\'t like apples."', answer: 'He doesn\'t like apples.', level: 'intermediate' },
+                { type: 'fill_in_blank', question: 'If I ___ a bird, I would fly.', answer: 'were', level: 'intermediate' },
+                { type: 'multiple_choice', question: 'Choose the correct passive voice: "Someone stole my car."', options: ['My car was stolen.', 'My car stole.', 'My car is stealing.'], answer: 'My car was stolen.', level: 'intermediate' },
+                { type: 'sentence_correction', question: 'Correct: "Despite of the rain, we went out."', answer: 'Despite the rain, we went out.', level: 'advanced' },
+                { type: 'fill_in_blank', question: 'Hardly had I arrived ___ it started raining.', answer: 'when', level: 'advanced' },
+                { type: 'multiple_choice', question: 'Which sentence uses the subjunctive mood correctly?', options: ['I suggest that he goes.', 'I suggest that he go.', 'I suggest that he went.'], answer: 'I suggest that he go.', level: 'advanced' },
+                { type: 'fill_in_blank', question: 'Neither John ___ Mary came to the party.', answer: 'nor', level: 'intermediate' },
+                { type: 'sentence_correction', question: 'Correct: "The data is conclusive."', answer: 'The data are conclusive.', level: 'advanced' },
+                { type: 'multiple_choice', question: 'Which is correct: "He is good at speak English." or "He is good at speaking English."?', options: ['He is good at speak English.', 'He is good at speaking English.'], answer: 'He is good at speaking English.', level: 'intermediate' },
+                { type: 'fill_in_blank', question: 'She looks ___ she has seen a ghost.', answer: 'as if', level: 'advanced' },
+                { type: 'sentence_correction', question: 'Correct: "I wish I was taller."', answer: 'I wish I were taller.', level: 'advanced' },
+                { type: 'multiple_choice', question: 'Which sentence correctly uses a dangling participle?', options: ['Walking down the street, the trees were beautiful.', 'Walking down the street, I saw beautiful trees.'], answer: 'Walking down the street, I saw beautiful trees.', level: 'advanced' },
+                { type: 'fill_in_blank', question: 'The committee ___ (decide) to postpone the meeting.', answer: 'has decided', level: 'intermediate' },
+            ],
+            reading: [
+                { type: 'comprehension', passage: 'My name is Omar. I live in Egypt. I like to learn English. Every day, I read a short story and practice new words.', question: 'Where does Omar live?', answer: 'Egypt', level: 'beginner' },
+                { type: 'comprehension', passage: 'The sun is shining brightly today. Birds are singing in the trees. It is a beautiful day for a walk in the park.', question: 'What are the birds doing?', answer: 'singing in the trees', level: 'beginner' },
+                { type: 'comprehension', passage: 'The industrial revolution, which began in the late 18th century, transformed economies and societies across the globe. It marked a shift from agrarian, handcraft-based economies to industrial, machine-based manufacturing. It led to significant urbanization and changes in social structures.', question: 'When did the industrial revolution begin?', answer: 'late 18th century', level: 'intermediate' },
+                { type: 'comprehension', passage: 'Climate change refers to long-term shifts in temperatures and weather patterns. These shifts may be natural, but since the 1800s, human activities have been the main driver of climate change, primarily due to the burning of fossil fuels. This has led to an increase in greenhouse gas concentrations in the atmosphere.', question: 'What is the main cause of climate change since the 1800s?', answer: 'burning of fossil fuels', level: 'intermediate' },
+                { type: 'comprehension', passage: 'Quantum entanglement is a phenomenon where two or more particles become linked in such a way that they share the same existence. When one particle is measured, the other instantaneously takes on a corresponding state, regardless of the distance separating them. This concept challenges classical notions of reality and locality, and has profound implications for quantum computing.', question: 'What happens to entangled particles when one is measured?', answer: 'the other instantaneously takes on a corresponding state', level: 'advanced' },
+                { type: 'comprehension', passage: 'The theory of relativity, developed by Albert Einstein, fundamentally changed our understanding of space and time. It consists of two main parts: special relativity, which deals with the relationship between space and time for objects moving at constant speeds, and general relativity, which extends this to include gravity. These theories have been experimentally confirmed numerous times.', question: 'Who developed the theory of relativity?', answer: 'Albert Einstein', level: 'advanced' },
+                { type: 'comprehension', passage: 'The Amazon rainforest is the largest rainforest in the world, covering an area of over 5.5 million square kilometers. It is home to an incredible diversity of plant and animal species, many of which are found nowhere else on Earth. The rainforest plays a crucial role in regulating the Earth\'s climate by absorbing vast amounts of carbon dioxide.', question: 'What is the significance of the Amazon rainforest in regulating Earth\'s climate?', answer: 'It absorbs vast amounts of carbon dioxide.', level: 'intermediate' },
+                { type: 'comprehension', passage: 'Artificial intelligence (AI) is rapidly transforming various industries, from healthcare to finance. Machine learning, a subset of AI, enables systems to learn from data without explicit programming. Deep learning, a further specialization, uses neural networks with multiple layers to analyze complex patterns. The ethical implications of AI development are a growing concern.', question: 'What is a subset of AI that allows systems to learn from data without explicit programming?', answer: 'Machine learning', level: 'advanced' },
+            ],
+            listening: [ // Simulated listening exercises
+                { type: 'type_what_you_hear', text_to_simulate_audio: 'The cat is on the mat.', question: 'Type the sentence you heard:', answer: 'the cat is on the mat', level: 'beginner' },
+                { type: 'type_what_you_hear', text_to_simulate_audio: 'How are you today?', question: 'Type the sentence you heard:', answer: 'how are you today', level: 'beginner' },
+                { type: 'type_what_you_hear', text_to_simulate_audio: 'Could you please repeat that?', question: 'Type the sentence you heard:', answer: 'could you please repeat that', level: 'intermediate' },
+                { type: 'type_what_you_hear', text_to_simulate_audio: 'The phenomenon of urban sprawl is a significant concern for environmentalists.', question: 'Type the sentence you heard:', answer: 'the phenomenon of urban sprawl is a significant concern for environmentalists', level: 'advanced' },
+                { type: 'type_what_you_hear', text_to_simulate_audio: 'Learning a new language opens up a world of opportunities.', question: 'Type the sentence you heard:', answer: 'learning a new language opens up a world of opportunities', level: 'intermediate' },
+                { type: 'type_what_you_hear', text_to_simulate_audio: 'The intricate details of the ancient manuscript fascinated the historians.', question: 'Type the sentence you heard:', answer: 'the intricate details of the ancient manuscript fascinated the historians', level: 'advanced' },
+                {
+                    type: 'story_comprehension_listening',
+                    text_to_simulate_audio: 'Once upon a time, there was a small rabbit named Thumper. He loved to hop around in the forest and eat fresh carrots. One sunny morning, he met a wise old owl who taught him about the importance of sharing. Thumper learned a valuable lesson that day.',
+                    questions: [
+                        { q: 'What was the rabbit\'s name?', a: 'Thumper' },
+                        { q: 'What did Thumper love to eat?', a: 'fresh carrots' },
+                        { q: 'Who taught Thumper about sharing?', a: 'a wise old owl' }
+                    ],
+                    level: 'beginner'
+                },
+                {
+                    type: 'story_comprehension_listening',
+                    text_to_simulate_audio: 'The ancient city of Petra, located in modern-day Jordan, is a UNESCO World Heritage Site and one of the New7Wonders of the World. Carved directly into vibrant red sandstone cliffs, it was once the capital of the Nabataean kingdom. Its intricate water conduit system and impressive architecture, like Al-Khazneh (The Treasury), showcase the advanced engineering of its creators. Petra flourished as a major trade hub until a shift in trade routes and a series of earthquakes led to its decline.',
+                    questions: [
+                        { q: 'Where is the ancient city of Petra located?', a: 'Jordan' },
+                        { q: 'What was Petra once the capital of?', a: 'the Nabataean kingdom' },
+                        { q: 'What is Al-Khazneh also known as?', a: 'The Treasury' },
+                        { q: 'What led to Petra\'s decline?', a: 'a shift in trade routes and a series of earthquakes' }
+                    ],
+                    level: 'intermediate'
+                },
+                {
+                    type: 'story_comprehension_listening',
+                    text_to_simulate_audio: 'Neuroplasticity, also known as brain plasticity, is the ability of the brain to change and adapt its structure and function in response to experience. This dynamic process is fundamental to learning, memory formation, and recovery from brain injury. It involves the creation of new neural pathways, the strengthening or weakening of existing synapses, and even the generation of new neurons in certain brain regions. While more pronounced in childhood, neuroplasticity continues throughout adulthood, allowing individuals to acquire new skills and adapt to changing environments, challenging the long-held belief that the adult brain is static.',
+                    questions: [
+                        { q: 'What is neuroplasticity?', a: 'the ability of the brain to change and adapt its structure and function in response to experience' },
+                        { q: 'What processes is neuroplasticity fundamental to?', a: 'learning, memory formation, and recovery from brain injury' },
+                        { q: 'What does neuroplasticity involve?', a: 'the creation of new neural pathways, the strengthening or weakening of existing synapses, and even the generation of new neurons' },
+                        { q: 'Does neuroplasticity continue throughout adulthood?', a: 'Yes' }
+                    ],
+                    level: 'advanced'
+                }
+            ],
+            pronunciation: [ // Simulated pronunciation exercises
+                { type: 'repeat_word', question: 'Repeat the word:', text_to_simulate_audio: 'Pronunciation', answer: 'pronunciation', level: 'intermediate' },
+                { type: 'repeat_sentence', question: 'Repeat the sentence:', text_to_simulate_audio: 'She sells seashells by the seashore.', answer: 'she sells seashells by the seashore', level: 'advanced' },
+                { type: 'repeat_word', question: 'Repeat the word:', text_to_simulate_audio: 'Hello', answer: 'hello', level: 'beginner' },
+                { type: 'repeat_sentence', question: 'Repeat the sentence:', text_to_simulate_audio: 'The quick brown fox jumps over the lazy dog.', answer: 'the quick brown fox jumps over the lazy dog', level: 'advanced' },
+                { type: 'repeat_word', question: 'Repeat the word:', text_to_simulate_audio: 'Elephant', answer: 'elephant', level: 'beginner' },
+                { type: 'repeat_sentence', question: 'Repeat the sentence:', text_to_simulate_audio: 'How do you do?', answer: 'how do you do', level: 'beginner' },
+                { type: 'repeat_word', question: 'Repeat the word:', text_to_simulate_audio: 'Consciousness', answer: 'consciousness', level: 'advanced' },
+                { type: 'repeat_sentence', question: 'Repeat the sentence:', text_to_simulate_audio: 'The early bird catches the worm.', answer: 'the early bird catches the worm', level: 'intermediate' },
+            ],
+            speaking: [ // Simulated speaking exercises (AI chat will handle actual speaking practice)
+                { type: 'practice_dialogue', question: 'Practice introducing yourself: "Hello, my name is [Your Name]. What\'s yours?"', answer: 'hello my name is', level: 'beginner' },
+                { type: 'describe_picture', question: 'Describe your favorite hobby in three sentences.', answer: 'no specific answer, open-ended', level: 'intermediate' },
+                { type: 'express_opinion', question: 'Express your opinion on climate change in a few sentences.', answer: 'no specific answer, open-ended', level: 'advanced' },
+            ],
+            writing: [ // Simulated writing exercises
+                { type: 'write_sentence', question: 'Write a simple sentence about your day.', answer: 'no specific answer, open-ended', level: 'beginner' },
+                { type: 'write_paragraph', question: 'Write a paragraph describing your hometown.', answer: 'no specific answer, open-ended', level: 'intermediate' },
+                { type: 'write_essay_intro', question: 'Write an introductory paragraph for an essay on the importance of education.', answer: 'no specific answer, open-ended', level: 'advanced' },
+            ],
+            review: [
+                { type: 'review_flashcards', question: 'Review 10 flashcards from your vocabulary list.', answer: 'reviewed', level: 'all' },
+                { type: 'revisit_grammar', question: 'Revisit a grammar topic you found challenging this week.', answer: 'revisited', level: 'all' },
+            ],
+            test: [
+                { type: 'mini_quiz', question: 'Take a short quiz on recent vocabulary and grammar topics.', answer: 'completed', level: 'all' },
+                { type: 'self_assessment', question: 'Assess your progress this week. What did you learn?', answer: 'completed', level: 'all' },
+            ]
+        };
+
+
+        // Initial Assessment Questions (fixed for initial level determination)
+        // This array is kept for reference but no longer used for initial assessment flow.
+        const assessmentQuestions = [
+            { type: 'translation_en_ar', question: 'Translate "dog" to Arabic:', answer: 'كلب' },
+            { type: 'multiple_choice', question: 'I ___ a student.', options: ['am', 'is', 'are'], answer: 'am' },
+            { type: 'fill_in_blank', question: 'The color of the sky is ___ (أزرق).', answer: 'blue' },
+            { type: 'comprehension', passage: 'My favorite animal is a bird. Birds can fly.', question: 'What can birds do?', answer: 'fly' },
+            { type: 'translation_ar_en', question: 'Translate "شكرا" to English:', answer: 'thank you' }
+        ];
+        let currentAssessmentQuestionIndex = 0;
+        let assessmentScore = 0;
+
+        // --- Helper Functions ---
+
+        const getTodayDayName = () => {
+            const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const d = new Date();
+            return days[d.getDay()];
+        };
+
+        const getTodayDateString = () => {
+            const d = new Date();
+            return d.toISOString().split('T')[0]; // YYYY-MM-DD
+        };
+
+        // --- Render Functions ---
+
+        const renderFlashcards = () => {
+            const flashcardContainer = document.getElementById('flashcardContainer');
+            flashcardContainer.innerHTML = ''; // Clear existing cards
+
+            if (userVocabulary.length === 0) {
+                flashcardContainer.innerHTML = '<p class="text-gray-600 text-sm col-span-full text-center">لا توجد كلمات بعد. أضف كلماتك لإنشاء بطاقات تعليمية!</p>';
+                return;
+            }
+
+            userVocabulary.forEach((word) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'flashcard';
+                cardDiv.innerHTML = `
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <span class="text-blue-700">${word}</span>
+                            <button data-word="${word}" class="remove-word-btn text-red-500 hover:text-red-700 text-sm mt-2">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="flashcard-back">
+                            <span class="text-gray-700">...</span> <!-- Placeholder for Arabic translation -->
+                            <button data-word="${word}" class="remove-word-btn text-red-500 hover:text-red-700 text-sm mt-2">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                cardDiv.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('remove-word-btn')) {
+                        cardDiv.classList.toggle('flipped');
+                        // Simulate translation for flashcard back
+                        if (cardDiv.classList.contains('flipped')) {
+                            translateWordForFlashcard(word, cardDiv.querySelector('.flashcard-back span'));
+                        }
+                    }
+                });
+                flashcardContainer.appendChild(cardDiv);
+            });
+
+            flashcardContainer.querySelectorAll('.remove-word-btn').forEach(button => {
+                button.addEventListener('click', removeWord);
+            });
+        };
+
+        const translateWordForFlashcard = async (word, targetElement) => {
+            targetElement.textContent = 'جاري الترجمة...';
+            try {
+                const prompt = `Translate the English word "${word}" to Arabic. Provide only the Arabic translation.`;
+                const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const translation = result.candidates[0].content.parts[0].text.trim();
+                    targetElement.textContent = translation;
+                } else {
+                    targetElement.textContent = 'خطأ في الترجمة';
+                }
+            } catch (error) {
+                console.error("Error translating word:", error);
+                targetElement.textContent = 'خطأ في الترجمة';
+            }
+        };
+
+
+        const renderDailySchedule = () => {
+            const dailyScheduleDiv = document.getElementById('dailySchedule');
+            dailyScheduleDiv.innerHTML = ''; // Clear existing schedule
+
+            const todayDayName = getTodayDayName();
+            const todayDate = getTodayDateString();
+            const todayBlueprint = weeklyScheduleBlueprint.find(s => s.day === todayDayName);
+
+            if (!todayBlueprint) {
+                dailyScheduleDiv.innerHTML = '<p class="text-gray-600">لا يوجد جدول لهذا اليوم.</p>';
+                return;
+            }
+
+            // Dynamically generate 3-5 tasks for the day based on blueprint and user level
+            const numberOfTasks = Math.floor(Math.random() * 3) + 3; // 3 to 5 tasks
+            const generatedTasks = [];
+            const levelMap = { 'سهل': 'beginner', 'متوسط': 'intermediate', 'صعب': 'advanced' };
+            const effectiveLevel = userProfile ? (levelMap[userProfile.difficultyPreference] || userProfile.userLevel || 'beginner') : 'beginner';
+
+            const availableExercisesForLevel = (type) => {
+                const exercises = allExercises[type] || [];
+                return exercises.filter(ex => {
+                    if (ex.level === 'all') return true; // 'all' level exercises apply to everyone
+                    if (effectiveLevel === 'beginner') return ex.level === 'beginner';
+                    if (effectiveLevel === 'intermediate') return ex.level === 'beginner' || ex.level === 'intermediate';
+                    if (effectiveLevel === 'advanced') return true; // All levels
+                    return true; // Default to all if level is undefined
+                });
+            };
+
+            // Select tasks, ensuring variety and level appropriateness
+            const selectedTypes = new Set();
+            while (generatedTasks.length < numberOfTasks && selectedTypes.size < todayBlueprint.types.length) {
+                const randomType = todayBlueprint.types[Math.floor(Math.random() * todayBlueprint.types.length)];
+                if (!selectedTypes.has(randomType)) {
+                    selectedTypes.add(randomType);
+                    const exercisesOfType = availableExercisesForLevel(randomType);
+                    if (exercisesOfType.length > 0) {
+                        const randomExercise = exercisesOfType[Math.floor(Math.random() * exercisesOfType.length)];
+                        const duration = Math.floor(Math.random() * (activityTypes[randomType].maxDuration - activityTypes[randomType].minDuration + 1)) + activityTypes[randomType].minDuration;
+                        generatedTasks.push({
+                            id: `${randomType}_${Date.now()}_${generatedTasks.length}`, // Unique ID for task completion tracking
+                            text: `${activityTypes[randomType].text}: ${randomExercise.question.split(':')[0]}...`, // Shortened question for schedule
+                            duration: duration,
+                            type: randomType,
+                            fullExercise: randomExercise // Store full exercise for later use if needed
+                        });
+                    }
+                }
+            }
+
+            if (generatedTasks.length === 0) {
+                dailyScheduleDiv.innerHTML = '<p class="text-gray-600">لا توجد مهام مقترحة لهذا اليوم حاليًا.</p>';
+                return;
+            }
+
+            if (!dailyCompletionStatus[todayDate]) {
+                dailyCompletionStatus[todayDate] = {};
+            }
+
+            generatedTasks.forEach(task => {
+                const isCompleted = dailyCompletionStatus[todayDate][task.id] || false;
+                const taskItemDiv = document.createElement('div');
+                taskItemDiv.className = 'task-item';
+                taskItemDiv.innerHTML = `
+                    <div class="flex items-center">
+                        <input type="checkbox" id="task-${task.id}" data-task-id="${task.id}" class="task-checkbox ml-2" ${isCompleted ? 'checked' : ''}>
+                        <label for="task-${task.id}" class="text-lg text-gray-700">${task.text}</label>
+                    </div>
+                    <span class="text-gray-600 text-sm">${task.duration} دقيقة</span>
+                `;
+                dailyScheduleDiv.appendChild(taskItemDiv);
+            });
+
+            dailyScheduleDiv.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', toggleTaskCompletion);
+            });
+        };
+
+        const updateOverallProgress = () => {
+            let totalPossibleTasks = 0; // This will be dynamic based on the number of generated tasks per day
+            let completedTasks = 0;
+
+            // To get a meaningful overall progress, we'll count all tasks ever generated and completed
+            // This requires a more robust tracking of 'total tasks generated' over time.
+            // For simplicity in this example, we'll count completed tasks against a theoretical max if all days had max tasks.
+            // A more accurate approach would be to store the generated daily tasks in Firestore.
+            // For now, we'll just sum up all completed tasks from dailyCompletionStatus.
+
+            for (const date in dailyCompletionStatus) {
+                for (const taskId in dailyCompletionStatus[date]) {
+                    if (dailyCompletionStatus[date][taskId]) {
+                        completedTasks++;
+                    }
+                }
+            }
+            // Estimating total possible tasks for a meaningful percentage display.
+            // Let's assume an average of 4 tasks per day for the last 7 days for a rough estimate.
+            totalPossibleTasks = 7 * 4; // A simple heuristic
+
+            const progressPercentage = totalPossibleTasks > 0 ? Math.round((completedTasks / totalPossibleTasks) * 100) : 0;
+
+            const progressBar = document.getElementById('overallProgressBar');
+            const completedCountSpan = document.getElementById('completedTasksCount');
+
+            progressBar.style.width = `${progressPercentage}%`;
+            progressBar.textContent = `${progressPercentage}%`;
+            completedCountSpan.textContent = completedTasks;
+        };
+
+        const renderAchievements = () => {
+            const achievementsContainer = document.getElementById('achievementsContainer');
+            const allBadges = achievementsContainer.querySelectorAll('.achievement-badge');
+
+            allBadges.forEach(badge => {
+                const achievementId = badge.dataset.achievement;
+                if (userAchievements.includes(achievementId)) {
+                    badge.classList.add('unlocked');
+                    badge.innerHTML = `<i class="fas fa-award ml-1"></i> ${badge.textContent.trim()}`; // Change icon for unlocked
+                } else {
+                    badge.classList.remove('unlocked');
+                    badge.innerHTML = `<i class="fas fa-check-circle ml-1"></i> ${badge.textContent.trim()}`; // Default icon
+                }
+            });
+        };
+
+        // --- Event Handlers ---
+
+        const addWord = async () => {
+            if (!isAuthReady) {
+                showNotification("الرجاء الانتظار حتى يتم تهيئة التطبيق.", 'info');
+                return;
+            }
+            const newWordInput = document.getElementById('newWordInput');
+            const word = newWordInput.value.trim();
+
+            if (word && !userVocabulary.includes(word)) {
+                userVocabulary.push(word);
+                newWordInput.value = '';
+
+                const vocabDocRef = getUserDocRef('vocabulary', 'words');
+                if (vocabDocRef) {
+                    try {
+                        await setDoc(vocabDocRef, { words: userVocabulary });
+                        showNotification(`تمت إضافة الكلمة "${word}" بنجاح!`, 'success');
+                        checkAchievements(); // Check for vocab achievements
+                    } catch (error) {
+                        console.error("Error adding word to Firestore:", error);
+                        showNotification("خطأ في إضافة الكلمة.", 'error');
+                    }
+                }
+            } else if (word && userVocabulary.includes(word)) {
+                showNotification("هذه الكلمة موجودة بالفعل.", 'warning');
+            } else {
+                showNotification("الرجاء إدخال كلمة.", 'warning');
+            }
+        };
+
+        const removeWord = async (event) => {
+            if (!isAuthReady) {
+                showNotification("الرجاء الانتظار حتى يتم تهيئة التطبيق.", 'info');
+                return;
+            }
+            const wordToRemove = event.currentTarget.dataset.word;
+            const updatedVocabulary = userVocabulary.filter(word => word !== wordToRemove);
+
+            const vocabDocRef = getUserDocRef('vocabulary', 'words');
+            if (vocabDocRef) {
+                try {
+                    await setDoc(vocabDocRef, { words: updatedVocabulary });
+                    showNotification(`تمت إزالة الكلمة "${wordToRemove}" بنجاح.`, 'success');
+                } catch (error) {
+                    console.error("Error removing word from Firestore:", error);
+                    showNotification("خطأ في إزالة الكلمة.", 'error');
+                }
+            }
+        };
+
+        const toggleTaskCompletion = async (event) => {
+            if (!isAuthReady) {
+                showNotification("الرجاء الانتظار حتى يتم تهيئة التطبيق.", 'info');
+                event.target.checked = !event.target.checked;
+                return;
+            }
+            const taskId = event.target.dataset.taskId;
+            const isChecked = event.target.checked;
+            const todayDate = getTodayDateString();
+
+            if (!dailyCompletionStatus[todayDate]) {
+                dailyCompletionStatus[todayDate] = {};
+            }
+            dailyCompletionStatus[todayDate][taskId] = isChecked;
+
+            const scheduleDocRef = getUserDocRef('schedule_data', 'daily_completion');
+            if (scheduleDocRef) {
+                try {
+                    await setDoc(scheduleDocRef, { completion: dailyCompletionStatus });
+                    showNotification(isChecked ? 'تم إكمال المهمة!' : 'تم إلغاء إكمال المهمة.', 'success');
+                    renderDailySchedule();
+                    updateOverallProgress();
+                    checkAchievements(); // Check achievements on task completion
+                } catch (error) {
+                    console.error("Error updating task completion in Firestore:", error);
+                    showNotification("خطأ في تحديث حالة المهمة.", 'error');
+                    event.target.checked = !event.target.checked;
+                }
+            }
+        };
+
+        // --- Notifications ---
+        let notificationTimeout;
+
+        const showNotification = (message, type = 'info', duration = 3000) => {
+            const notificationBox = document.getElementById('notificationBox');
+            const notificationMessage = document.getElementById('notificationMessage');
+
+            clearTimeout(notificationTimeout);
+
+            notificationMessage.textContent = message;
+            notificationBox.className = `notification-box mb-6 ${type}`; /* Add type class */
+            
+            notificationBox.style.display = 'block';
+
+            notificationTimeout = setTimeout(() => {
+                notificationBox.style.display = 'none';
+            }, duration);
+        };
+
+        const setupNotifications = () => {
+            const todayDayName = getTodayDayName();
+            const todayBlueprint = weeklyScheduleBlueprint.find(s => s.day === todayDayName);
+            const todayDate = getTodayDateString();
+
+            if (!todayBlueprint) return;
+
+            // This part needs to be more sophisticated if tasks are truly dynamic.
+            // For now, it will just check if any tasks were completed for today.
+            const completedToday = dailyCompletionStatus[todayDate] ? Object.values(dailyCompletionStatus[todayDate]).some(status => status) : false;
+
+            if (!completedToday) {
+                // showNotification(`تذكير: لديك مهام لغوية اليوم!`, 'info', 10000);
+            } else {
+                // showNotification('لقد أكملت بعض مهامك اليومية! أحسنت!', 'success', 5000);
+            }
+        };
+
+        // --- Exercise Logic ---
+
+        const generateExercise = (type, targetExerciseArea, targetFeedbackDiv, targetScoreDisplay) => {
+            const exerciseArea = document.getElementById(targetExerciseArea);
+            const exerciseFeedback = document.getElementById(targetFeedbackDiv);
+            exerciseFeedback.classList.add('hidden');
+
+            let exercisesForType = allExercises[type];
+
+            // Filter exercises by user level (or preferred difficulty)
+            const levelMap = { 'سهل': 'beginner', 'متوسط': 'intermediate', 'صعب': 'advanced' };
+            const effectiveLevel = userProfile ? (levelMap[userProfile.difficultyPreference] || userProfile.userLevel || 'beginner') : 'beginner';
+
+            const filteredExercises = exercisesForType.filter(ex => {
+                if (ex.level === 'all') return true; // 'all' level exercises apply to everyone
+                if (effectiveLevel === 'beginner') return ex.level === 'beginner';
+                if (effectiveLevel === 'intermediate') return ex.level === 'beginner' || ex.level === 'intermediate';
+                if (effectiveLevel === 'advanced') return true; // All levels
+                return true; // Default to all if level is undefined
+            });
+
+            // If vocabulary exercises are requested but user has no words, use general vocab exercises
+            if (type === 'vocabulary' && userVocabulary.length > 0) {
+                const userVocabExercises = userVocabulary.map(word => ({
+                    type: 'translation_en_ar',
+                    question: `Translate "${word}" to Arabic:`,
+                    answer: word, // For simplicity, expecting user to type the English word back
+                    level: 'beginner' // User's words are typically beginner level
+                }));
+                exercisesForType = [...userVocabExercises, ...filteredExercises];
+            } else {
+                exercisesForType = filteredExercises;
+            }
+
+            if (!exercisesForType || exercisesForType.length === 0) {
+                exerciseArea.innerHTML = '<p class="text-gray-600">لا توجد تمارين متاحة لهذا النوع أو المستوى حاليًا.</p>';
+                return;
+            }
+
+            const randomExercise = exercisesForType[Math.floor(Math.random() * exercisesForType.length)];
+            currentExercise = randomExercise;
+            currentExercise.targetArea = targetExerciseArea; // Store where this exercise is rendered
+            currentExercise.targetFeedback = targetFeedbackDiv;
+            currentExercise.targetScore = targetScoreDisplay;
+
+
+            let questionHTML = '';
+
+            if (randomExercise.type === 'translation_en_ar' || randomExercise.type === 'translation_ar_en' || randomExercise.type === 'fill_in_blank' || randomExercise.type === 'synonym' || randomExercise.type === 'antonym' || randomExercise.type === 'sentence_correction' || randomExercise.type === 'practice_dialogue' || randomExercise.type === 'describe_picture' || randomExercise.type === 'express_opinion' || randomExercise.type === 'write_sentence' || randomExercise.type === 'write_paragraph' || randomExercise.type === 'write_essay_intro' || randomExercise.type === 'review_flashcards' || randomExercise.type === 'revisit_grammar' || randomExercise.type === 'mini_quiz' || randomExercise.type === 'self_assessment') {
+                questionHTML = `
+                    <p class="text-xl font-semibold mb-4">${randomExercise.question}</p>
+                    <input type="text" id="exerciseInput" placeholder="أدخل الإجابة هنا" class="mb-3">
+                    <button id="submitExerciseBtn" class="btn-primary">تحقق</button>
+                `;
+            } else if (randomExercise.type === 'multiple_choice') {
+                const optionsHtml = randomExercise.options.map((option, index) => `
+                    <div class="flex items-center mb-2">
+                        <input type="radio" id="option-${index}" name="mcq_option" value="${option}" class="ml-2">
+                        <label for="option-${index}" class="text-lg text-gray-700">${option}</label>
+                    </div>
+                `).join('');
+                questionHTML = `
+                    <p class="text-xl font-semibold mb-4">${randomExercise.question}</p>
+                    ${optionsHtml}
+                    <button id="submitExerciseBtn" class="btn-primary mt-3">تحقق</button>
+                `;
+            } else if (randomExercise.type === 'comprehension') {
+                questionHTML = `
+                    <p class="text-xl font-semibold mb-2">اقرأ النص التالي ثم أجب:</p>
+                    <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                        <p class="text-gray-700 leading-relaxed">${randomExercise.passage}</p>
+                    </div>
+                    <p class="text-xl font-semibold mb-4">${randomExercise.question}</p>
+                    <input type="text" id="exerciseInput" placeholder="أدخل الإجابة هنا" class="mb-3">
+                    <button id="submitExerciseBtn" class="btn-primary">تحقق</button>
+                `;
+            } else if (randomExercise.type === 'type_what_you_hear') { // Listening exercise specific rendering
+                questionHTML = `
+                    <p class="text-xl font-semibold mb-4">استمع إلى النص ثم أجب:</p>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <button id="playAudioNormalBtn" class="btn-secondary"><i class="fas fa-play ml-2"></i> سرعة عادية</button>
+                        <button id="playAudioSlowBtn" class="btn-secondary"><i class="fas fa-slow-motion-video ml-2"></i> سرعة بطيئة</button>
+                        <button id="playAudioFastBtn" class="btn-secondary"><i class="fas fa-forward ml-2"></i> سرعة سريعة</button>
+                        <button id="playAudioWordByWordBtn" class="btn-secondary"><i class="fas fa-text-width ml-2"></i> كلمة بكلمة</button>
+                    </div>
+                    <div id="listeningTextDisplay" class="listening-text-display mb-4 text-gray-700 leading-relaxed"></div>
+                    <p class="text-xl font-semibold mb-4">${randomExercise.question}</p>
+                    <input type="text" id="exerciseInput" placeholder="اكتب ما سمعته هنا" class="mb-3">
+                    <button id="submitExerciseBtn" class="btn-primary">تحقق</button>
+                `;
+            } else if (randomExercise.type === 'story_comprehension_listening') { // New story listening exercise
+                let questionsHtml = randomExercise.questions.map((q, index) => `
+                    <p class="text-lg font-semibold mb-2 mt-4">السؤال ${index + 1}: ${q.q}</p>
+                    <input type="text" id="storyQuestionInput-${index}" data-question-index="${index}" placeholder="أدخل إجابتك هنا" class="mb-2">
+                `).join('');
+
+                questionHTML = `
+                    <p class="text-xl font-semibold mb-4">استمع إلى القصة ثم أجب على الأسئلة:</p>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <button id="playAudioNormalBtn" class="btn-secondary"><i class="fas fa-play ml-2"></i> سرعة عادية</button>
+                        <button id="playAudioSlowBtn" class="btn-secondary"><i class="fas fa-slow-motion-video ml-2"></i> سرعة بطيئة</button>
+                        <button id="playAudioFastBtn" class="btn-secondary"><i class="fas fa-forward ml-2"></i> سرعة سريعة</button>
+                        <button id="playAudioWordByWordBtn" class="btn-secondary"><i class="fas fa-text-width ml-2"></i> كلمة بكلمة</button>
+                    </div>
+                    <div id="listeningTextDisplay" class="listening-text-display mb-4 text-gray-700 leading-relaxed"></div>
+                    ${questionsHtml}
+                    <button id="submitExerciseBtn" class="btn-primary mt-3">تحقق من الإجابات</button>
+                `;
+            }
+            else if (randomExercise.type === 'repeat_word' || randomExercise.type === 'repeat_sentence') { // Pronunciation exercise specific rendering
+                questionHTML = `
+                    <p class="text-xl font-semibold mb-4">${randomExercise.question}</p>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <button id="playAudioNormalBtn" class="btn-secondary"><i class="fas fa-play ml-2"></i> سرعة عادية</button>
+                        <button id="playAudioSlowBtn" class="btn-secondary"><i class="fas fa-slow-motion-video ml-2"></i> سرعة بطيئة</button>
+                        <button id="playAudioFastBtn" class="btn-secondary"><i class="fas fa-forward ml-2"></i> سرعة سريعة</button>
+                        <button id="playAudioWordByWordBtn" class="btn-secondary"><i class="fas fa-text-width ml-2"></i> كلمة بكلمة</button>
+                    </div>
+                    <div id="pronunciationTextDisplay" class="pronunciation-text-display mb-4 text-gray-700 leading-relaxed"></div>
+                    <input type="text" id="exerciseInput" placeholder="أدخل ما قلته هنا (للمراجعة الذاتية)" class="mb-3">
+                    <button id="submitExerciseBtn" class="btn-primary">تحقق</button>
+                `;
+            }
+
+            exerciseArea.innerHTML = questionHTML;
+            document.getElementById('submitExerciseBtn').addEventListener('click', () => checkExerciseAnswer(type));
+
+            if (randomExercise.type === 'type_what_you_hear' || randomExercise.type === 'story_comprehension_listening' || randomExercise.type === 'repeat_word' || randomExercise.type === 'repeat_sentence') {
+                const textToSpeak = randomExercise.text_to_simulate_audio || randomExercise.text_to_simulate_audio; // For pronunciation, use text_to_simulate_audio
+                const textDisplayElementId = (type === 'listening' || type === 'story_comprehension_listening') ? 'listeningTextDisplay' : 'pronunciationTextDisplay';
+                const textDisplayElement = document.getElementById(textDisplayElementId);
+
+                document.getElementById('playAudioNormalBtn').addEventListener('click', () => {
+                    textDisplayElement.style.display = 'none'; // Ensure hidden for normal playback
+                    playListeningAudio(textToSpeak, 1.0);
+                });
+                document.getElementById('playAudioSlowBtn').addEventListener('click', () => {
+                    textDisplayElement.style.display = 'none';
+                    playListeningAudio(textToSpeak, 0.7);
+                });
+                document.getElementById('playAudioFastBtn').addEventListener('click', () => {
+                    textDisplayElement.style.display = 'none';
+                    playListeningAudio(textToSpeak, 1.3);
+                });
+                document.getElementById('playAudioWordByWordBtn').addEventListener('click', () => {
+                    playWordByWordAudio(textToSpeak, textDisplayElement, type);
+                });
+            }
+        };
+
+        const checkExerciseAnswer = (exerciseType) => {
+            const exerciseAreaId = currentExercise.targetArea;
+            const feedbackDivId = currentExercise.targetFeedback;
+            const scoreDisplayId = currentExercise.targetScore;
+
+            const feedbackDiv = document.getElementById(feedbackDivId);
+            feedbackDiv.classList.add('hidden'); // Hide before showing new feedback
+
+            if (!currentExercise) {
+                feedbackDiv.textContent = 'لا يوجد تمرين نشط.';
+                feedbackDiv.className = 'exercise-feedback incorrect';
+                return;
+            }
+
+            exerciseAttemptCount++; // Increment attempt count for any exercise submission
+
+            let isCorrect = true;
+            let feedbackMessage = '';
+
+            if (currentExercise.type === 'story_comprehension_listening') {
+                let correctAnswersCount = 0;
+                currentExercise.questions.forEach((q, index) => {
+                    const input = document.getElementById(`storyQuestionInput-${index}`);
+                    const userAnswer = input.value.trim().toLowerCase();
+                    const correctAnswer = q.a.toLowerCase();
+
+                    if (userAnswer === correctAnswer) {
+                        correctAnswersCount++;
+                        input.style.borderColor = '#28a745'; // Green border for correct
+                    } else {
+                        input.style.borderColor = '#dc3545'; // Red border for incorrect
+                        isCorrect = false; // Mark overall exercise as incorrect if any question is wrong
+                    }
+                });
+
+                if (isCorrect) {
+                    feedbackMessage = `إجابات صحيحة! أحسنت. لقد أجبت على ${correctAnswersCount} من ${currentExercise.questions.length} أسئلة بشكل صحيح.`;
+                    feedbackDiv.className = 'exercise-feedback correct';
+                    exerciseCorrectCount++;
+                } else {
+                    feedbackMessage = `إجابات خاطئة. لقد أجبت على ${correctAnswersCount} من ${currentExercise.questions.length} أسئلة بشكل صحيح. راجع إجاباتك.`;
+                    feedbackDiv.className = 'exercise-feedback incorrect';
+                }
+
+            } else if (currentExercise.answer === 'no specific answer, open-ended' || currentExercise.answer === 'reviewed' || currentExercise.answer === 'revisited' || currentExercise.answer === 'completed' || exerciseType === 'pronunciation') {
+                // For open-ended questions (speaking, writing, review, test, pronunciation), consider them "correct" on submission
+                feedbackMessage = 'تم تسجيل إجابتك. استمر في الممارسة!';
+                feedbackDiv.className = 'exercise-feedback correct';
+                exerciseCorrectCount++;
+            } else {
+                const exerciseInput = document.getElementById('exerciseInput');
+                let userAnswer;
+                if (currentExercise.type === 'multiple_choice') {
+                    const selectedOption = document.querySelector('input[name="mcq_option"]:checked');
+                    userAnswer = selectedOption ? selectedOption.value.trim().toLowerCase() : '';
+                } else {
+                    userAnswer = exerciseInput.value.trim().toLowerCase();
+                }
+                const correctAnswer = currentExercise.answer.toLowerCase();
+
+                if (userAnswer === correctAnswer) {
+                    feedbackMessage = 'إجابة صحيحة! أحسنت.';
+                    feedbackDiv.className = 'exercise-feedback correct';
+                    exerciseCorrectCount++;
+                } else {
+                    feedbackMessage = `إجابة خاطئة. الإجابة الصحيحة هي: "${currentExercise.answer}"`;
+                    feedbackDiv.className = 'exercise-feedback incorrect';
+                }
+            }
+
+            feedbackDiv.textContent = feedbackMessage;
+            feedbackDiv.classList.remove('hidden'); // Show feedback
+            updateExerciseProgressDisplay(scoreDisplayId);
+            checkAchievements(); // Check for exercise achievements
+            setTimeout(() => generateExercise(exerciseType, exerciseAreaId, feedbackDivId, scoreDisplayId), 3000); // Give user more time to read feedback for stories
+        };
+
+
+        const updateExerciseProgressDisplay = (scoreDisplayId) => {
+            document.getElementById(scoreDisplayId).textContent = `الدرجة: ${exerciseCorrectCount} / ${exerciseAttemptCount}`;
+        };
+
+        // --- Text-to-Speech for Listening Exercises ---
+        let currentUtterance = null; // To keep track of the current speech
+        const speechSynthesizer = window.speechSynthesis;
+
+        const getEnglishMaleVoice = () => {
+            const voices = speechSynthesizer.getVoices();
+            let maleVoice = voices.find(voice => voice.lang.startsWith('en') && (voice.name.includes('Male') || voice.name.includes('Google US English')));
+            if (!maleVoice) {
+                maleVoice = voices.find(voice => voice.lang.startsWith('en')); // Fallback to any English voice
+            }
+            return maleVoice;
+        };
+
+        const playListeningAudio = (text, rate = 1.0) => {
+            if (!('speechSynthesis' in window)) {
+                showNotification("متصفحك لا يدعم تشغيل الصوت.", 'error');
+                console.warn("SpeechSynthesis API not supported in this browser.");
+                return;
+            }
+
+            // Stop any ongoing speech
+            if (currentUtterance) {
+                speechSynthesizer.cancel();
+            }
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.voice = getEnglishMaleVoice();
+            utterance.rate = rate;
+            utterance.pitch = 1;
+
+            utterance.onstart = () => showNotification("جاري تشغيل الصوت...", 'info', 1500);
+            utterance.onend = () => showNotification("انتهى تشغيل الصوت.", 'info', 1500);
+            utterance.onerror = (event) => {
+                console.error('SpeechSynthesisUtterance.onerror', event);
+                showNotification("خطأ في تشغيل الصوت.", 'error');
+            };
+
+            currentUtterance = utterance;
+            speechSynthesizer.speak(utterance);
+        };
+
+        const playWordByWordAudio = (text, displayElement, sectionType) => {
+            if (!('speechSynthesis' in window)) {
+                showNotification("متصفحك لا يدعم تشغيل الصوت.", 'error');
+                console.warn("SpeechSynthesis API not supported in this browser.");
+                return;
+            }
+
+            if (currentUtterance) {
+                speechSynthesizer.cancel();
+            }
+
+            const words = text.split(/\s+/).filter(word => word.length > 0);
+            let wordIndex = 0;
+            const originalTextContent = text; // Store original text content
+
+            // Make the display element visible for word-by-word playback
+            displayElement.style.display = 'block';
+
+            const speakNextWord = () => {
+                if (wordIndex < words.length) {
+                    const word = words[wordIndex];
+                    const utterance = new SpeechSynthesisUtterance(word);
+                    utterance.voice = getEnglishMaleVoice();
+                    utterance.rate = 0.8; // Slightly slower for word-by-word
+                    utterance.pitch = 1;
+
+                    // Highlight the current word
+                    const highlightedText = words.map((w, i) =>
+                        i === wordIndex ? `<span class="listening-text-highlight">${w}</span>` : w
+                    ).join(' ');
+                    displayElement.innerHTML = highlightedText;
+
+                    utterance.onend = () => {
+                        wordIndex++;
+                        setTimeout(speakNextWord, 500); // Short pause between words
+                    };
+                    utterance.onerror = (event) => {
+                        console.error('SpeechSynthesisUtterance.onerror (word-by-word)', event);
+                        showNotification("خطأ في تشغيل الصوت كلمة بكلمة.", 'error');
+                        displayElement.innerHTML = originalTextContent; // Reset text on error
+                        if (sectionType === 'listening' || sectionType === 'story_comprehension_listening') displayElement.style.display = 'none'; // Hide if listening section
+                        else if (sectionType === 'pronunciation') displayElement.style.display = 'none'; // Hide if pronunciation section
+                    };
+
+                    currentUtterance = utterance;
+                    speechSynthesizer.speak(utterance);
+                } else {
+                    displayElement.innerHTML = originalTextContent; // Reset text when done
+                    if (sectionType === 'listening' || sectionType === 'story_comprehension_listening') displayElement.style.display = 'none'; // Hide if listening section
+                    else if (sectionType === 'pronunciation') displayElement.style.display = 'none'; // Hide if pronunciation section
+                    showNotification("انتهى تشغيل الصوت كلمة بكلمة.", 'info', 1500);
+                }
+            };
+
+            showNotification("جاري تشغيل الصوت كلمة بكلمة...", 'info', 1500);
+            speakNextWord();
+        };
+
+
+        // --- Profile Setup Modal Functions ---
+        const showProfileSetupModal = () => {
+            // Only show if profile is not completed
+            if (userProfile && userProfile.profileCompleted) {
+                document.getElementById('profileSetupModal').classList.add('hidden');
+                return;
+            }
+            document.getElementById('profileSetupModal').classList.remove('hidden');
+            // Populate modal fields if userProfile exists
+            if (userProfile) {
+                document.getElementById('userAge').value = userProfile.age || '';
+                document.getElementById('userGrade').value = userProfile.grade || '';
+                document.getElementById('userBirthMonth').value = userProfile.birthMonth || '';
+                document.getElementById('userDifficulty').value = userProfile.difficultyPreference || 'سهل';
+                document.getElementById('profileImageUrl').value = userProfile.profileImageUrl || '';
+                document.getElementById('profileImagePreview').src = userProfile.profileImageUrl || 'https://placehold.co/100x100/A0B0F0/ffffff?text=صورة';
+            }
+        };
+
+        // --- Initial Assessment Modal Functions (Now effectively disabled) ---
+        const showAssessmentModal = () => {
+            // This modal is no longer used for initial setup.
+            document.getElementById('assessmentModal').classList.add('hidden');
+            showNotification("اختبار تحديد المستوى غير مطلوب في هذا الإصدار.", 'info');
+            return;
+        };
+
+        const displayAssessmentQuestion = () => {
+            // No longer used.
+            console.log("displayAssessmentQuestion called, but assessment is disabled.");
+        };
+
+        const checkAssessmentAnswer = () => {
+            // No longer used.
+            console.log("checkAssessmentAnswer called, but assessment is disabled.");
+        };
+
+        const calculateUserLevel = async () => {
+            // This function is no longer needed for initial level setting,
+            // as level is now set directly from difficulty preference.
+            console.log("calculateUserLevel called, but level is set by difficulty preference.");
+        };
+
+        // --- Premium Features Logic ---
+        const togglePremiumStatus = async () => {
+            if (!isAuthReady || !userProfile) {
+                showNotification("الرجاء الانتظار حتى يتم تهيئة التطبيق.", 'info');
+                return;
+            }
+
+            const newPremiumStatus = !userProfile.isPremium;
+            const profileDocRef = getUserDocRef('profile', 'data');
+            if (profileDocRef) {
+                try {
+                    await updateDoc(profileDocRef, { isPremium: newPremiumStatus });
+                    userProfile.isPremium = newPremiumStatus; // Update local state
+                    updatePremiumFeaturesVisibility();
+                    showNotification(newPremiumStatus ? 'تم الترقية إلى الإمكانيات العالية!' : 'تم إلغاء الإمكانيات العالية.', newPremiumStatus ? 'success' : 'info');
+                } catch (error) {
+                    console.error("Error toggling premium status:", error);
+                    showNotification("خطأ في تحديث حالة الإمكانيات العالية.", 'error');
+                }
+            }
+        };
+
+        const updatePremiumFeaturesVisibility = () => {
+            const isPremium = userProfile && userProfile.isPremium;
+            const upgradeButton = document.getElementById('upgradeToPremiumBtn');
+            const premiumButtonText = document.getElementById('premiumButtonText');
+
+            if (isPremium) {
+                upgradeButton.classList.remove('btn-premium');
+                upgradeButton.classList.add('btn-secondary');
+                premiumButtonText.textContent = 'إلغاء الإمكانيات العالية';
+            } else {
+                upgradeButton.classList.remove('btn-secondary');
+                upgradeButton.classList.add('btn-premium');
+                premiumButtonText.textContent = 'الترقية إلى الإمكانيات العالية';
+            }
+        };
+
+        // --- AI Chatbot Logic ---
+        const aiChatBox = document.getElementById('aiChatBox');
+        const aiChatInput = document.getElementById('aiChatInput');
+        const sendAiChatBtn = document.getElementById('sendAiChatBtn');
+        const geminiApiKeyInput = document.getElementById('geminiApiKeyInput');
+
+        const sendMessageToAI = async () => {
+            GEMINI_API_KEY = geminiApiKeyInput.value.trim(); // Get API key from input field
+            if (!GEMINI_API_KEY) {
+                showNotification("الرجاء إدخال مفتاح Gemini API الخاص بك لتشغيل مساعد الذكاء الاصطناعي.", 'warning');
+                return;
+            }
+
+            const userMessageText = aiChatInput.value.trim();
+            if (!userMessageText) return;
+
+            // Display user message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'user-message';
+            userMessageDiv.textContent = userMessageText;
+            aiChatBox.appendChild(userMessageDiv);
+            aiChatInput.value = '';
+            aiChatBox.scrollTop = aiChatBox.scrollHeight; // Scroll to bottom
+
+            // Display loading message
+            const loadingMessageDiv = document.createElement('div');
+            loadingMessageDiv.className = 'ai-message loading';
+            loadingMessageDiv.textContent = 'جاري الرد...';
+            aiChatBox.appendChild(loadingMessageDiv);
+            aiChatBox.scrollTop = aiChatBox.scrollHeight;
+
+            try {
+                const prompt = `You are an English language tutor. The user is practicing English. Respond to their message "${userMessageText}" in English. Provide corrections if necessary and offer a follow-up question or suggestion for practice. Keep responses concise and helpful.`;
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                aiChatBox.removeChild(loadingMessageDiv); // Remove loading message
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const aiResponseText = result.candidates[0].content.parts[0].text;
+                    const aiMessageDiv = document.createElement('div');
+                    aiMessageDiv.className = 'ai-message';
+                    aiMessageDiv.textContent = aiResponseText;
+                    aiChatBox.appendChild(aiMessageDiv);
+                } else {
+                    const errorMessageDiv = document.createElement('div');
+                    errorMessageDiv.className = 'ai-message incorrect';
+                    errorMessageDiv.textContent = 'عذراً، حدث خطأ في الحصول على الرد.';
+                    aiChatBox.appendChild(errorMessageDiv);
+                }
+            } catch (error) {
+                console.error("Error sending message to AI:", error);
+                aiChatBox.removeChild(loadingMessageDiv);
+                const errorMessageDiv = document.createElement('div');
+                errorMessageDiv.className = 'ai-message incorrect';
+                errorMessageDiv.textContent = 'عذراً، حدث خطأ في الاتصال بالمساعد.';
+                aiChatBox.appendChild(errorMessageDiv);
+            } finally {
+                aiChatBox.scrollTop = aiChatBox.scrollHeight; // Scroll to bottom again
+            }
+        };
+
+        // --- Achievements Logic ---
+        const checkAchievements = async () => {
+            if (!isAuthReady) return;
+
+            // Calculate total completed tasks
+            let totalCompletedTasks = 0;
+            for (const date in dailyCompletionStatus) {
+                for (const taskId in dailyCompletionStatus[date]) {
+                    if (dailyCompletionStatus[date][taskId]) {
+                        totalCompletedTasks++;
+                    }
+                }
+            }
+            const totalExercisesAnswered = exerciseAttemptCount;
+            const totalVocabularyWords = userVocabulary.length;
+
+            const achievementsToCheck = [
+                { id: 'first_task', condition: totalCompletedTasks >= 1, message: 'تهانينا! لقد أكملت أول مهمة لك!' },
+                { id: '10_tasks', condition: totalCompletedTasks >= 10, message: 'إنجاز رائع! لقد أكملت 10 مهام!' },
+                { id: 'first_exercise', condition: totalExercisesAnswered >= 1, message: 'ممتاز! لقد أكملت أول تمرين لك!' },
+                { id: '50_exercises', condition: totalExercisesAnswered >= 50, message: 'أنت بطل! 50 تمرينًا مكتملًا!' },
+                { id: 'vocab_master', condition: totalVocabularyWords >= 20, message: 'خبير مفردات! لقد أضفت 20 كلمة جديدة!' }
+            ];
+
+            let newAchievementUnlocked = false;
+            for (const achievement of achievementsToCheck) {
+                if (achievement.condition && !userAchievements.includes(achievement.id)) {
+                    userAchievements.push(achievement.id);
+                    showNotification(achievement.message, 'success', 5000);
+                    newAchievementUnlocked = true;
+                }
+            }
+
+            if (newAchievementUnlocked) {
+                const achievementsDocRef = getUserDocRef('achievements', 'status');
+                if (achievementsDocRef) {
+                    try {
+                        await setDoc(achievementsDocRef, { unlocked: userAchievements });
+                    } catch (error) {
+                        console.error("Error saving achievements:", error);
+                    }
+                }
+            }
+            renderAchievements(); // Always re-render to update badges
+        };
+
+        // --- Section Navigation Logic ---
+        const showSection = (sectionId) => {
+            document.querySelectorAll('.main-content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update active state for nav buttons
+            document.querySelectorAll('.top-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.section === sectionId) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Reset exercise scores when switching sections
+            exerciseCorrectCount = 0;
+            exerciseAttemptCount = 0;
+            updateExerciseProgressDisplay('vocabularyExerciseScoreDisplay');
+            updateExerciseProgressDisplay('grammarExerciseScoreDisplay');
+            updateExerciseProgressDisplay('readingExerciseScoreDisplay');
+            updateExerciseProgressDisplay('listeningExerciseScoreDisplay');
+            updateExerciseProgressDisplay('pronunciationExerciseScoreDisplay');
+
+            // Clear exercise areas when switching and re-attach start buttons
+            document.getElementById('vocabularyExerciseArea').innerHTML = '<p class="text-gray-600">اضغط على "بدء تمرين" لبدء تمرين مفردات.</p><button id="startVocabExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>';
+            document.getElementById('grammarExerciseArea').innerHTML = '<p class="text-gray-600">اضغط على "بدء تمرين" لبدء تمرين قواعد.</p><button id="startGrammarExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>';
+            document.getElementById('readingContentArea').innerHTML = '<p class="text-gray-600">اضغط على "بدء تمرين" لتحميل نص القراءة والأسئلة.</p><button id="startReadingExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>';
+            document.getElementById('listeningContentArea').innerHTML = '<p class="text-gray-600">اضغط على "بدء تمرين" لعرض نص الاستماع وتشغيل الصوت.</p><button id="startListeningExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>';
+            document.getElementById('pronunciationExerciseArea').innerHTML = '<p class="text-gray-600">اضغط على "بدء تمرين" لبدء تمرين النطق.</p><button id="startPronunciationExerciseBtn" class="btn-primary mt-4">بدء تمرين</button>';
+
+            // Re-attach event listeners for start buttons in new sections
+            document.getElementById('startVocabExerciseBtn').onclick = () => generateExercise('vocabulary', 'vocabularyExerciseArea', 'vocabularyExerciseFeedback', 'vocabularyExerciseScoreDisplay');
+            document.getElementById('startGrammarExerciseBtn').onclick = () => generateExercise('grammar', 'grammarExerciseArea', 'grammarExerciseFeedback', 'grammarExerciseScoreDisplay');
+            document.getElementById('startReadingExerciseBtn').onclick = () => generateExercise('reading', 'readingContentArea', 'readingExerciseFeedback', 'readingExerciseScoreDisplay');
+            document.getElementById('startListeningExerciseBtn').onclick = () => generateExercise('listening', 'listeningContentArea', 'listeningExerciseFeedback', 'listeningExerciseScoreDisplay');
+            document.getElementById('startPronunciationExerciseBtn').onclick = () => generateExercise('pronunciation', 'pronunciationExerciseArea', 'pronunciationExerciseFeedback', 'pronunciationExerciseScoreDisplay');
+        };
+
+
+        // --- Initial Load & Event Listeners ---
+        window.onload = initFirebase;
+
+        document.getElementById('addWordBtn').addEventListener('click', addWord);
+        document.getElementById('newWordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addWord();
+            }
+        });
+
+        // Event listeners for new top navigation buttons
+        document.querySelectorAll('.top-nav-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const sectionId = e.currentTarget.dataset.section;
+                showSection(sectionId);
+            });
+        });
+
+
+        document.getElementById('saveProfileBtn').addEventListener('click', saveUserProfile);
+        document.getElementById('profileImageUrl').addEventListener('input', (e) => {
+            const preview = document.getElementById('profileImagePreview');
+            if (e.target.value) {
+                preview.src = e.target.value;
+            } else {
+                preview.src = 'https://placehold.co/100x100/A0B0F0/ffffff?text=صورة'; // Default placeholder
+            }
+        });
+
+        // Removed the event listener for submitAssessmentBtn as assessment is now skipped
+        // document.getElementById('submitAssessmentBtn').addEventListener('click', checkAssessmentAnswer);
+        document.getElementById('editProfileBtn').addEventListener('click', showProfileSetupModal);
+        document.getElementById('upgradeToPremiumBtn').addEventListener('click', togglePremiumStatus);
+
+        sendAiChatBtn.addEventListener('click', sendMessageToAI);
+        aiChatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessageToAI();
+            }
+        });
+
+        // Initial setup for exercise buttons (for sections that are visible by default or when clicked)
+        document.getElementById('startVocabExerciseBtn').onclick = () => generateExercise('vocabulary', 'vocabularyExerciseArea', 'vocabularyExerciseFeedback', 'vocabularyExerciseScoreDisplay');
+        document.getElementById('startGrammarExerciseBtn').onclick = () => generateExercise('grammar', 'grammarExerciseArea', 'grammarExerciseFeedback', 'grammarExerciseScoreDisplay');
+        document.getElementById('startReadingExerciseBtn').onclick = () => generateExercise('reading', 'readingContentArea', 'readingExerciseFeedback', 'readingExerciseScoreDisplay');
+        document.getElementById('startListeningExerciseBtn').onclick = () => generateExercise('listening', 'listeningContentArea', 'listeningExerciseFeedback', 'listeningExerciseScoreDisplay');
+        document.getElementById('startPronunciationExerciseBtn').onclick = () => generateExercise('pronunciation', 'pronunciationExerciseArea', 'pronunciationExerciseFeedback', 'pronunciationExerciseScoreDisplay');
+
+    </script>
+</body>
+</html>
